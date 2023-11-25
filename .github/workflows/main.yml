@@ -1,8 +1,6 @@
 name: Update GOG Database
 
 on:
-  schedule:
-    - cron: '*/60 * * * *'  # Run the script every 1 Hour
   workflow_dispatch:
 
 jobs:
