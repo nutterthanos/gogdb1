@@ -1,0 +1,49 @@
+name: Update GOG Database
+
+on:
+  schedule:
+    - cron: '*/60 * * * *'  # Run the script every 1 Hour
+  workflow_dispatch:
+
+jobs:
+  update_gog_db:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3.5.2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # If you have any dependencies
+
+    - name: Run product_builds.py script
+      run: python ./products_builds.py  # Update the path accordingly
+
+    - name: Run increment_productid.py script
+      run: python ./increment_productid.py
+
+    - name: Commit and push changes - updated list
+      run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ./
+          git commit -m "Updated DB as of - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          git push origin ${{ github.ref }}
+
+    - name: Wait for 30 seconds
+      run: sleep 30
+
+    - name: Trigger Another Workflow Run
+      run: |
+        curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/your_workflow_name.yml/dispatches \
+          -d '{"ref":"main"}'
