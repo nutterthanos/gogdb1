@@ -39,7 +39,7 @@ async def download_and_save(session, product_id, operating_system, generation, s
                     return
 
                 # Use a temporary folder for downloading and checking the hash
-                temp_folder = os.path.join(os.environ['TEMP'], 'gog_products_temp', str(product_id))
+                temp_folder = os.path.join(os.environ['RUNNER_TEMP'], 'gog_products_temp', str(product_id))
                 os.makedirs(temp_folder, exist_ok=True)
 
                 temp_filename = os.path.join(temp_folder, f"{product_id}.json")
@@ -115,8 +115,8 @@ async def main(start_product_id, end_product_id, operating_system, generation):
         subprocess.run(["git", "push"])
 
 if __name__ == "__main__":
-    start_product_id = 197000000  # Replace with your start product ID
-    end_product_id = 198000000   # Replace with your end product ID
+    start_product_id = 10000000  # Replace with your start product ID
+    end_product_id = 11000000   # Replace with your end product ID
     os_type = "windows"   # Replace with your operating system
     generation = 2        # Replace with your generation
     asyncio.run(main(start_product_id, end_product_id, os_type, generation))
