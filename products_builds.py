@@ -115,8 +115,8 @@ async def main(start_product_id, end_product_id, operating_system, generation):
         subprocess.run(["git", "push"])
 
 if __name__ == "__main__":
-    start_product_id = 184000000  # Replace with your start product ID
-    end_product_id = 185000000   # Replace with your end product ID
+    start_product_id = 185000000  # Replace with your start product ID
+    end_product_id = 186000000   # Replace with your end product ID
     os_type = "windows"   # Replace with your operating system
     generation = 2        # Replace with your generation
     asyncio.run(main(start_product_id, end_product_id, os_type, generation))
